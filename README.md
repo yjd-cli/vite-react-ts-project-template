@@ -98,7 +98,10 @@ vite-react-ts-project-template
 - env 环境变量：以 PUBLIC_ 开头的环境变量会通过 import.meta.env 暴露在你的客户端源码中。所以敏感信息不要以 PUBLIC_ 为前缀。
 - pages 只存放页面容器组件
 - components 存放页面下的业务组件（容器组件 + UI组件），需要以页面维度划分子目录
-- 配置式路由：项目路由统一在 routes 目录下配置，页面级别路由建议使用动态加载
+- 配置式路由：
+  - 项目路由统一在 routes 目录下配置
+  - 页面级别路由建议使用动态加载
+  - 路由组件统一使用 `export default xxx` 的形式导出，否则路由无法渲染出来
 
 
 ## [Git 提交信息规范](https://commitlint.js.org/#/reference-rules?id=rules)
