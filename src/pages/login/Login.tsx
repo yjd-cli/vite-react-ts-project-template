@@ -25,19 +25,17 @@ type ComponentDispatchProps = ReturnType<typeof mapDispatchToProps>;
 /**
  * 组件最终接收的所有 Props 类型声明
  */
-type LoginProps =
-  MapStateFromStoreProps &
-  ComponentDispatchProps & {};
+// eslint-disable-next-line @typescript-eslint/ban-types
+type LoginProps = MapStateFromStoreProps & ComponentDispatchProps & {};
 
 class Login extends React.Component<LoginProps> {
   render() {
-
     const { count, list, increment, incrementAsync } = this.props;
-    console.log('list', list);
 
     return (
       <div>
-        The count is {count}
+        <h2>LoginContainer</h2>
+        <div>The count is {count}</div>
         <button onClick={() => increment()}>increment</button>
         <button onClick={() => incrementAsync()}>incrementAsync</button>
       </div>
@@ -45,5 +43,5 @@ class Login extends React.Component<LoginProps> {
   }
 }
 
-export const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
-
+const LoginContainer = connect(mapStateToProps, mapDispatchToProps)(Login);
+export default LoginContainer;

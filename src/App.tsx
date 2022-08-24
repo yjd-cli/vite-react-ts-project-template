@@ -1,6 +1,5 @@
-import { LoginContainer } from '@src/pages/login/Login';
-import { RegisterContainer } from '@src/pages/register/Register';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import reactLogo from './assets/images/react.svg';
 import './App.css';
 
@@ -43,9 +42,18 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-
-      <LoginContainer/>
-      <RegisterContainer/>
+      <div>
+        <div>
+          <Link to="home">To Home</Link>
+        </div>
+        <div>
+          <Link to="register">To Register</Link>
+        </div>
+        <div>
+          <Link to="login">To Login</Link>
+        </div>
+      </div>
+      <Outlet />
     </div>
   );
 }

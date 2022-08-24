@@ -1,117 +1,77 @@
 /**
- * @description：路由配置入口文件
+ * @description：路由配置文件
  */
 import React from 'react';
+import { cloneDeep } from 'lodash';
+// import { RouteObject } from 'react-router/lib/router';
+// import RegisterContainer from '@src/pages/register/Register';
+import NotFoundContainer from '@src/pages/404/NotFound';
+import HomeContainer from '@src/pages/home/Home';
 
-/**
- * 注意：如果路由组件使用动态加载的话，那么下面就不要再引入组件了，否则动态加载就会失效
- * 如果项目结构简单，可以在当前文件中配置所有路由，如果结构复杂，就需要将二级路由及下层的路由单独拆分成一个个路由配置文件
- */
+function LazyElement(props: any) {
+  const { importFunc } = props;
+  const LazyComponent = React.lazy(importFunc);
 
-import App from '@src/entry/App';
-
-export interface RouteConfigDeclaration {
-    /**
-     * 当前路由路径
-     */
-    path: string;
-    /**
-     * 当前路由名称
-     */
-    name?: string;
-    /**
-     * 是否严格匹配路由
-     */
-    exact?: boolean;
-    /**
-     * 是否需要路由鉴权
-     */
-    isProtected?: boolean;
-    /**
-     * 是否需要路由重定向
-     */
-    isRedirect?: boolean;
-    /**
-     * 是否需要动态加载路由
-     */
-    isDynamic?: boolean;
-    /**
-     * 动态加载路由时的提示文案
-     */
-    loadingFallback?: string;
-    /**
-     * 路由组件
-     */
-    component: any;
-    /**
-     * 子路由
-     */
-    routes?: RouteConfigDeclaration[];
+  return (
+    <React.Suspense fallback={'loading...'}>
+      <LazyComponent />
+    </React.Suspense>
+  );
 }
 
-export const routesConfig: RouteConfigDeclaration[] = [
-    {
-        path: '/',
-        name: 'root-route',
-        component: App,
-        routes: [
-            {
-                path: '/home',
-                // exact: true,
-                isDynamic: true,
-                // loadingFallback: '不一样的 loading 内容...',
-                // component: Home,
-                // component: React.lazy(
-                //     () =>
-                //         new Promise(resolve =>
-                //             setTimeout(
-                //                 () =>
-                //                     resolve(
-                //                       import(/* webpackChunkName: "home"*/ '@src/views/home/Home'),
-                //                     ),
-                //                 2000,
-                //             ),
-                //         ),
-                // ),
-                component: React.lazy(() =>
-                    import(/* webpackChunkName: "home"*/ '@src/pages/home/Home'),
-                ),
-                routes: [
-                    {
-                        path: '/home/child-one',
-                        isDynamic: true,
-                        component: React.lazy(() =>
-                            import(/* webpackChunkName: "child-one" */ '@src/pages/home/ChildOne'),
-                        ),
-                    },
-                    {
-                        path: '/home/child-two',
-                        isRedirect: true,
-                        isDynamic: true,
-                        component: React.lazy(() =>
-                            import(/* webpackChunkName: "child-two" */ '@src/pages/home/ChildTwo'),
-                        ),
-                    },
-                ],
-            },
-            {
-                path: '/login',
-                isDynamic: true,
-                isRedirect: true,
-                component: React.lazy(() =>
-                    import(
-                        /* webpackChunkName: "login" */
-                        '@src/pages/login/Login'
-                    ),
-                ),
-            },
-            {
-                path: '/register',
-                isDynamic: true,
-                component: React.lazy(() =>
-                    import(/* webpackChunkName: "register"*/ '@src/pages/register/Register'),
-                ),
-            },
-        ],
-    },
+// 处理 routes 如果 element 是懒加载，要包裹Suspense
+function dealRoutes(routesArr) {
+  if (!Array.isArray(routesArr) || !routesArr.length) {
+    return [];
+  }
+  const clonedArr = cloneDeep(routesArr);
+  clonedArr.forEach((route) => {
+    const { component } = route;
+    route.element = component;
+
+    if (typeof component == 'function') {
+      route.element = <LazyElement importFunc={component} />;
+    }
+
+    delete route.component;
+
+    if (route.children) {
+      route.children = dealRoutes(route.children);
+    }
+  });
+
+  return clonedArr;
+}
+
+// 原始路由配置
+export const rawRoutesConfig = [
+  {
+    path: '/',
+    component: () => import('@src/App'),
+    children: [
+      {
+        index: true,
+        component: <HomeContainer />,
+      },
+      {
+        path: 'home',
+        component: <HomeContainer />,
+      },
+      {
+        path: 'register',
+        // component: <RegisterContainer />,
+        component: () => import('@src/pages/register/Register'),
+      },
+      {
+        path: 'login',
+        component: () => import('@src/pages/login/Login'),
+      },
+    ],
+  },
+  {
+    path: '*',
+    component: <NotFoundContainer />,
+  },
 ];
+
+export const routesConfig = dealRoutes(rawRoutesConfig);
