@@ -56,6 +56,10 @@ export const rawRoutesConfig = [
         path: 'home',
         component: <HomeContainer />,
       },
+      {
+        path: 'user',
+        component: () => import('@src/pages/user/User'),
+      },
     ],
   },
   {

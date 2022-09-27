@@ -5,7 +5,7 @@ import { Menu } from 'antd';
 
 const menuItems = [
   {
-    label: 'Navigation One',
+    label: 'Home',
     key: 'home',
   },
   {
@@ -27,14 +27,8 @@ const menuItems = [
     ],
   },
   {
-    label: 'Navigation Three',
-    key: 'navigation-three',
-    children: [
-      {
-        label: 'Option 3-1',
-        key: 'option-one',
-      },
-    ],
+    label: 'User',
+    key: 'user',
   },
 ];
 
