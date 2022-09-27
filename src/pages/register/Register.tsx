@@ -25,6 +25,9 @@ function RegisterContainer() {
         <div>
           <Link to="/login">To Login</Link>
         </div>
+        <div>
+          <Link to="/user">To User</Link>
+        </div>
       </div>
     </div>
   );

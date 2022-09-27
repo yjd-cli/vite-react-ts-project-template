@@ -49,6 +49,9 @@ class Login extends React.Component<LoginProps> {
           <div>
             <Link to="/register">To Register</Link>
           </div>
+          <div>
+            <Link to="/user">To User</Link>
+          </div>
         </div>
       </div>
     );

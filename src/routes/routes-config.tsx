@@ -47,29 +47,41 @@ export const rawRoutesConfig = [
     path: '/',
     component: () => import('@src/App'),
     children: [
+      // 一旦解开下面的注释代码，默认路由就会优先渲染 register，布局路由里设置的默认路由就会失效
+      // {
+      //   index: true,
+      //   component: () => import('@src/pages/register/Register'),
+      // },
       {
-        // index route 不能有 children、path 属性
-        index: true,
-        component: <HomeContainer />,
+        component: () => import('@src/common/components/common-layout'),
+        children: [
+          {
+            // index route 不能有 children、path 属性
+            // 在布局路由下的子路由，想要设置为默认路由，必须在布局路由下配置，不能跳出布局路由外单独设置，否则只会渲染子路由内容，布局路由不会渲染出来
+            index: true,
+            component: <HomeContainer />,
+          },
+          {
+            path: 'home',
+            component: <HomeContainer />,
+          },
+          {
+            path: 'user',
+            component: () => import('@src/pages/user/User'),
+          },
+        ],
       },
       {
-        path: 'home',
-        component: <HomeContainer />,
+        path: 'register',
+        component: () => import('@src/pages/register/Register'),
       },
       {
-        path: 'user',
-        component: () => import('@src/pages/user/User'),
+        path: 'login',
+        component: () => import('@src/pages/login/Login'),
       },
     ],
   },
-  {
-    path: 'register',
-    component: () => import('@src/pages/register/Register'),
-  },
-  {
-    path: 'login',
-    component: () => import('@src/pages/login/Login'),
-  },
+
   {
     path: '*',
     component: <NotFoundContainer />,
