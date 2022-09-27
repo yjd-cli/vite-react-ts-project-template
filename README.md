@@ -36,8 +36,7 @@ vite-react-ts-project-template
      │   ├── axios.ts
      │   ├── config.ts
      │   ├── token-manager.ts
-     │   ├── server-response-manager.ts
-     │   └── server-resource.ts
+     │   └──  server-response-manager.ts
      ├── store                  # 全局 store 目录
      │   ├── index.ts
      │   ├── history.ts

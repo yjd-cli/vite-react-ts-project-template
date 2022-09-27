@@ -1,6 +1,8 @@
+import ViteReactShowArea from '@src/common/components/vite-react-show-area/ViteReactShowArea';
 import React from 'react';
 import { connect } from 'react-redux';
 import { RootState, RootDispatch } from '@src/store';
+import { Link } from 'react-router-dom';
 
 const mapStateToProps = (state: RootState) => ({
   count: state.login.count,
@@ -35,9 +37,19 @@ class Login extends React.Component<LoginProps> {
     return (
       <div>
         <h2>LoginContainer</h2>
+        <ViteReactShowArea />
         <div>The count is {count}</div>
         <button onClick={() => increment()}>increment</button>
         <button onClick={() => incrementAsync()}>incrementAsync</button>
+
+        <div>
+          <div>
+            <Link to="/home">To Home</Link>
+          </div>
+          <div>
+            <Link to="/register">To Register</Link>
+          </div>
+        </div>
       </div>
     );
   }

@@ -3,8 +3,6 @@
  */
 import React from 'react';
 import { cloneDeep } from 'lodash';
-// import { RouteObject } from 'react-router/lib/router';
-// import RegisterContainer from '@src/pages/register/Register';
 import NotFoundContainer from '@src/pages/404/NotFound';
 import HomeContainer from '@src/pages/home/Home';
 
@@ -50,6 +48,7 @@ export const rawRoutesConfig = [
     component: () => import('@src/App'),
     children: [
       {
+        // index route 不能有 children、path 属性
         index: true,
         component: <HomeContainer />,
       },
@@ -57,16 +56,15 @@ export const rawRoutesConfig = [
         path: 'home',
         component: <HomeContainer />,
       },
-      {
-        path: 'register',
-        // component: <RegisterContainer />,
-        component: () => import('@src/pages/register/Register'),
-      },
-      {
-        path: 'login',
-        component: () => import('@src/pages/login/Login'),
-      },
     ],
+  },
+  {
+    path: 'register',
+    component: () => import('@src/pages/register/Register'),
+  },
+  {
+    path: 'login',
+    component: () => import('@src/pages/login/Login'),
   },
   {
     path: '*',
